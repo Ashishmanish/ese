@@ -8,6 +8,7 @@ const ComplaintDetails = () => {
     const { id } = useParams();
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     const [complaint, setComplaint] = useState(null);
     const [loading, setLoading] = useState(true);
     const [statusUpdate, setStatusUpdate] = useState('');
@@ -22,7 +23,7 @@ const ComplaintDetails = () => {
             const config = {
                 headers: { Authorization: `Bearer ${user.token}` }
             };
-            const res = await axios.get(`http://localhost:5000/api/complaints/${id}`, config);
+            const res = await axios.get(`${API_URL}/api/complaints/${id}`, config);
             setComplaint(res.data);
             setStatusUpdate(res.data.status);
         } catch (error) {
@@ -39,7 +40,7 @@ const ComplaintDetails = () => {
             const config = {
                 headers: { Authorization: `Bearer ${user.token}` }
             };
-            const res = await axios.put(`http://localhost:5000/api/complaints/${id}`, { status: statusUpdate }, config);
+            const res = await axios.put(`${API_URL}/api/complaints/${id}`, { status: statusUpdate }, config);
             setComplaint(res.data);
             alert('Status updated successfully!');
         } catch (error) {

@@ -9,6 +9,7 @@ const Dashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCategory, setFilterCategory] = useState('');
     const { user } = useContext(AuthContext);
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
     useEffect(() => {
         fetchComplaints();
@@ -19,7 +20,7 @@ const Dashboard = () => {
             const config = {
                 headers: { Authorization: `Bearer ${user.token}` }
             };
-            const res = await axios.get('http://localhost:5000/api/complaints', config);
+            const res = await axios.get(`${API_URL}/api/complaints`, config);
             setComplaints(res.data);
         } catch (error) {
             console.error('Error fetching complaints:', error);
@@ -36,7 +37,7 @@ const Dashboard = () => {
             const config = {
                 headers: { Authorization: `Bearer ${user.token}` }
             };
-            const res = await axios.get(`http://localhost:5000/api/complaints/search?location=${searchTerm}`, config);
+            const res = await axios.get(`${API_URL}/api/complaints/search?location=${searchTerm}`, config);
             setComplaints(res.data);
         } catch (error) {
             console.error('Error searching complaints:', error);

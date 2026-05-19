@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const ComplaintForm = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     
     const [formData, setFormData] = useState({
         name: user?.name || '',
@@ -28,11 +29,11 @@ const ComplaintForm = () => {
             const config = {
                 headers: { Authorization: `Bearer ${user.token}` }
             };
-            const res = await axios.post('http://localhost:5000/api/complaints', formData, config);
+            const res = await axios.post(`${API_URL}/api/complaints`, formData, config);
             
             // Automatically trigger AI analysis
             try {
-                await axios.post('http://localhost:5000/api/ai/analyze', { complaintId: res.data._id }, config);
+                await axios.post(`${API_URL}/api/ai/analyze`, { complaintId: res.data._id }, config);
             } catch (aiError) {
                 console.error("AI Analysis failed but complaint was created", aiError);
             }
